@@ -1,0 +1,72 @@
+service: serverless-tasks-api
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: us-east-1
+  # environment:
+  #   MONGODB_URI: ${env:MONGODB_URI}
+
+functions:
+  getTasks:
+    handler: src/handlers/tasks.getTasks
+    events:
+      - http:
+          path: api/tasks
+          method: get
+          cors: true
+
+  createTask:
+    handler: src/handlers/tasks.createTask
+    events:
+      - http:
+          path: api/tasks
+          method: post
+          cors: true
+
+  updateTask:
+    handler: src/handlers/tasks.updateTask
+    events:
+      - http:
+          path: api/tasks/{taskId}
+          method: put
+          cors: true
+
+  deleteTask:
+    handler: src/handlers/tasks.deleteTask
+    events:
+      - http:
+          path: api/tasks/{taskId}
+          method: delete
+          cors: true
+
+  register:
+    handler: src/handlers/auth.register
+    events:
+      - http:
+          path: api/auth/register
+          method: post
+          cors: true
+
+  login:
+    handler: src/handlers/auth.login
+    events:
+      - http:
+          path: api/auth/login
+          method: post
+          cors: true
+
+  logout:
+    handler: src/handlers/auth.logout
+    events:
+      - http:
+          path: api/auth/logout
+          method: post
+          cors: true
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+package:
+  individually: true
